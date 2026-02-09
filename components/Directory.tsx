@@ -34,3 +34,24 @@ export const Directory: React.FC = () => {
                 src={emp.avatar} 
                 alt={`${emp.firstName} ${emp.lastName}`} 
                 className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-slate-50"
+            />
+            <h3 className="text-lg font-bold text-slate-800">{emp.firstName} {emp.lastName}</h3>
+            <p className="text-blue-600 font-medium mb-1">{emp.position}</p>
+            <p className="text-slate-500 text-sm mb-4 flex items-center justify-center">
+              <Briefcase size={14} className="mr-1" /> {emp.department}
+            </p>
+            
+            <div className="flex space-x-3 w-full mt-auto pt-4 border-t border-slate-50">
+                <a href={`mailto:${emp.email}`} className="flex-1 flex items-center justify-center py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors text-sm">
+                    <Mail size={16} className="mr-2" /> Email
+                </a>
+                 <a href={`tel:${emp.phone}`} className="flex-1 flex items-center justify-center py-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors text-sm">
+                    <Phone size={16} className="mr-2" /> Appeler
+                </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
