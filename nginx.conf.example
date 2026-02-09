@@ -1,0 +1,37 @@
+server {
+    listen 80;
+    server_name intranet.ads.local;
+    
+    # Racine du projet contenant index.html et le dossier api/
+    root /var/www/intranet-ADS;
+    index index.html;
+
+    # Logs
+    error_log /var/log/nginx/intranet_error.log;
+    access_log /var/log/nginx/intranet_access.log;
+
+    # 1. FRONTEND: Redirection vers index.html pour le routing React (SPA)
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 2. BACKEND: Redirection des appels /api vers le routeur PHP
+    location /api {
+        # Si le fichier existe, on le sert, sinon on passe par api/index.php
+        try_files $uri $uri/ /api/index.php?$query_string;
+    }
+
+    # Configuration PHP-FPM
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        # Ajustez la version de PHP selon votre installation (ex: php8.2-fpm.sock)
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Sécurité : on empêche l'accès direct aux fichiers de config sensibles
+    location ~ /api/config/ {
+        deny all;
+    }
+}
